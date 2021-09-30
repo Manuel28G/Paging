@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Paging3</string>
+    <string name="crypto_item_title">Crypto: %s</string>
+    <string name="crypto_item_price">Price: %s</string>
+</resources>
