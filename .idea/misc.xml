@@ -3,9 +3,19 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.22864583333333333" />
+        <entry key="app/src/main/res/drawable/ic_helium_hnt_logo.xml" value="0.3932291666666667" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.3932291666666667" />
+        <entry key="app/src/main/res/drawable/ic_pancakeswap_cake_logo.xml" value="0.3932291666666667" />
+        <entry key="app/src/main/res/drawable/ic_polkadot_new_dot_logo.xml" value="0.3932291666666667" />
+        <entry key="app/src/main/res/drawable/ic_tether_usdt_logo.xml" value="0.3932291666666667" />
+        <entry key="app/src/main/res/drawable/ic_theta_theta_logo.xml" value="0.3932291666666667" />
+        <entry key="app/src/main/res/drawable/ic_uniswap_uni_logo.xml" value="0.22864583333333333" />
+        <entry key="app/src/main/res/drawable/round_border.xml" value="0.22864583333333333" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3770833333333333" />
         <entry key="app/src/main/res/layout/fragment_crypto_list.xml" value="0.3770833333333333" />
         <entry key="app/src/main/res/layout/item_crypto_currency.xml" value="0.3770833333333333" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.22864583333333333" />
       </map>
     </option>
   </component>

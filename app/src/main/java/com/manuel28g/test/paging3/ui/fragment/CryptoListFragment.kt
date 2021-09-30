@@ -17,13 +17,14 @@ import com.manuel28g.test.paging3.viewmodel.CryptoInfoViewModel
 class CryptoListFragment: Fragment() {
     private lateinit var mBinding : FragmentCryptoListBinding
     private lateinit var mViewModel : CryptoInfoViewModel
-    private val mAdapter: CryptoListAdapter = CryptoListAdapter()
+    private lateinit var mAdapter: CryptoListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        mAdapter = CryptoListAdapter(requireContext())
         mViewModel = ViewModelProvider(this).get(CryptoInfoViewModel::class.java)
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_crypto_list, container, false)
         mBinding.lifecycleOwner = viewLifecycleOwner
