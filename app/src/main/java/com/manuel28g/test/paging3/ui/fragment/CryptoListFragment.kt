@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.manuel28g.test.paging3.R
 import com.manuel28g.test.paging3.databinding.FragmentCryptoListBinding
 import com.manuel28g.test.paging3.ui.adapter.CryptoListAdapter
@@ -37,11 +38,15 @@ class CryptoListFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mViewModel.getData()
-        mViewModel.cryptoDataListObserve().observe(viewLifecycleOwner, Observer {
+        mViewModel.cryptoDataListObserve().observe(viewLifecycleOwner, {
             it?.let { data ->
-                mAdapter.listOfItems = data
-                mAdapter.notifyDataSetChanged()
+                mAdapter.submitList(data){
+                    val layoutManager = (mBinding.cryptoListRvContent.layoutManager as LinearLayoutManager)
+                    val position = layoutManager.findFirstCompletelyVisibleItemPosition()
+                    if (position != RecyclerView.NO_POSITION) {
+                        mBinding.cryptoListRvContent.scrollToPosition(position)
+                    }
+                }
             }
         })
 

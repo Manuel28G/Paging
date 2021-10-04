@@ -3,15 +3,16 @@ package com.manuel28g.test.paging3.ui.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.manuel28g.test.paging3.R
 import com.manuel28g.test.paging3.data.CryptoCurrency
 import com.manuel28g.test.paging3.databinding.ItemCryptoCurrencyBinding
 
 class CryptoListAdapter(private val context: Context):
-    RecyclerView.Adapter<CryptoViewHolder>()  {
+    PagedListAdapter<CryptoCurrency, CryptoViewHolder>(POST_COMPARATOR) {
 
-    var listOfItems :List<CryptoCurrency> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CryptoViewHolder {
         val bindingGroup = ItemCryptoCurrencyBinding.inflate(
@@ -21,11 +22,34 @@ class CryptoListAdapter(private val context: Context):
     }
 
     override fun onBindViewHolder(holder: CryptoViewHolder, position: Int) {
-        val crypto = listOfItems[position]
-        holder.bind(crypto.cryptoPair,crypto.price)
+        val crypto = getItem(position)
+        crypto?.let {
+            holder.bind(it.cryptoPair,it.price)
+        }
     }
 
-    override fun getItemCount(): Int = listOfItems.size
+    companion object {
+        private val PAYLOAD_SCORE = Any()
+        val POST_COMPARATOR = object : DiffUtil.ItemCallback<CryptoCurrency>() {
+            override fun areContentsTheSame(oldItem: CryptoCurrency, newItem: CryptoCurrency): Boolean =
+                oldItem == newItem
+
+            override fun areItemsTheSame(oldItem: CryptoCurrency, newItem: CryptoCurrency): Boolean =
+                oldItem.cryptoPair == newItem.cryptoPair
+
+            override fun getChangePayload(oldItem: CryptoCurrency, newItem: CryptoCurrency): Any? {
+                return if (sameExceptScore(oldItem, newItem)) {
+                    PAYLOAD_SCORE
+                } else {
+                    null
+                }
+            }
+        }
+
+        private fun sameExceptScore(oldItem: CryptoCurrency, newItem: CryptoCurrency): Boolean {
+            return oldItem.copy(price = newItem.price) == newItem
+        }
+    }
 
 }
 
