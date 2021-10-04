@@ -4,5 +4,5 @@ import com.manuel28g.test.paging3.data.CryptoCurrency
 
 interface BinanceRepository {
 
-    fun getData() :List<CryptoCurrency>?
+    fun getData() : List<CryptoCurrency>?
 }

@@ -5,8 +5,6 @@ import retrofit2.Call
 import retrofit2.http.GET
 
 interface BinanceAPI {
-
         @GET("ticker/price")
         fun getData(): Call<List<CryptoCurrency>>
-
 }
