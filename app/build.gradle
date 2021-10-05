@@ -7,7 +7,7 @@ ext{
     localProperties = new Properties()
     localProperties.load(new FileInputStream(localPropertiesFile))
     retrofit_version = "2.9.0"
-    paging_version = "2.1.2"
+    paging_version = "3.0.1"
     room_version = "2.2.5"
     multidex_version = "2.0.1"
 }
@@ -82,11 +82,9 @@ dependencies {
     implementation "com.google.code.gson:gson:2.8.8"
     //Paging
     implementation "androidx.paging:paging-runtime:$paging_version"
-    implementation "androidx.paging:paging-rxjava2:$paging_version"
     //Room
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
-    //implementation 'com.android.support:multidex:1.0.3'
 
 }

@@ -6,19 +6,18 @@ import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.manuel28g.test.paging3.data.CryptoCurrency
-import com.manuel28g.test.paging3.datasource.CryptoDataSourceFactory
+import com.manuel28g.test.paging3.datasource.CryptoDataPagingSource
 import com.manuel28g.test.paging3.helpers.RetrofitHelper
 import com.manuel28g.test.paging3.repository.BinanceRepository
 import com.manuel28g.test.paging3.repository.BinanceRepositoryImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class CryptoInfoViewModel: ViewModel() {
     private val mRepository : BinanceRepository = BinanceRepositoryImpl(RetrofitHelper().getInstance())
     private val mCryptoDataList = MutableLiveData<List<CryptoCurrency>?>()
-    private val dataSourceFactory = CryptoDataSourceFactory(RetrofitHelper().getInstance())
+    private val dataSourceFactory = CryptoDataPagingSource(RetrofitHelper().getInstance())
 
 
     fun getData(){
