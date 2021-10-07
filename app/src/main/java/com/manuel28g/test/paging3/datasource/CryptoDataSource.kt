@@ -39,8 +39,12 @@ class CryptoDataSource(private val api: BinanceAPI) : ItemKeyedDataSource<Int,Cr
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<CryptoCurrency>) {
         response?.take(params.requestedLoadSize)?.let {
             //remove from response the data send to the adapter
-            response = response?.subList(params.requestedLoadSize,response?.size?: 0)
-            callback.onResult(it)
+            response?.let {
+                if(response != null && params.requestedLoadSize < it.size) {
+                    response = response?.subList(params.requestedLoadSize, it.size ?: 0)
+                    callback.onResult(it)
+                }
+            }
         }
     }
 
