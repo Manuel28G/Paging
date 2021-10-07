@@ -37,7 +37,10 @@ class CryptoListFragment: Fragment() {
         mViewModel = ViewModelProvider(this).get(CryptoInfoViewModel::class.java)
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_crypto_list, container, false)
         mBinding.lifecycleOwner = viewLifecycleOwner
-        mBinding.cryptoListRvContent.adapter = mAdapter
+        mBinding.cryptoListRvContent.adapter = mAdapter.withLoadStateHeaderAndFooter(
+            header = CryptoListStatefulAdapter{mAdapter.retry()},
+            footer = CryptoListStatefulAdapter{mAdapter.retry()}
+        )
         var layout =  LinearLayoutManager(context)
         layout.orientation = LinearLayoutManager.VERTICAL
         mBinding.cryptoListRvContent.layoutManager = layout
