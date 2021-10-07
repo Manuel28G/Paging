@@ -11,7 +11,7 @@ class CryptoDataPagingSource(private val api: BinanceAPI): PagingSource<Int,Cryp
 
     companion object{
         private const val SECOND_CRYPTO_TITLE = "USDT"
-        private var response: List<CryptoCurrency>?= null
+        private var mData: List<CryptoCurrency>?= null
     }
 
     override fun getRefreshKey(state: PagingState<Int, CryptoCurrency>): Int? {
@@ -23,7 +23,9 @@ class CryptoDataPagingSource(private val api: BinanceAPI): PagingSource<Int,Cryp
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CryptoCurrency> {
         val nextPageNumber = params.key ?: 1
         try{
-            response = api.getData().execute().body()?.filter {
+
+            val response = api.getData()
+            val data = response.body()?.filter {
                 //Get only the cryptos with the pair indicated
                 it.cryptoPair.contains(SECOND_CRYPTO_TITLE)
             }?.map {
@@ -31,9 +33,9 @@ class CryptoDataPagingSource(private val api: BinanceAPI): PagingSource<Int,Cryp
                 it.cryptoPair = "${cryptoTitle[0]}/${SECOND_CRYPTO_TITLE}"
                 it
             }
-            response?.take(params.loadSize)?.let {
+            data?.take(params.loadSize)?.let {
                 //remove from response the data send to the adapter
-                response = response?.subList(params.loadSize,response?.size?: 0)
+                mData = data?.subList(params.loadSize,data?.size?: 0)
 
                 return LoadResult.Page(
                     data = it,

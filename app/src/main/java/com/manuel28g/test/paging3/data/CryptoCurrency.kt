@@ -9,6 +9,7 @@ import com.google.gson.annotations.SerializedName
     indices = [Index(value = ["binance"], unique = false)])
 data class CryptoCurrency(
     @PrimaryKey(autoGenerate = true)
+    @Transient
     val id: Int,
     @SerializedName("symbol")
     var cryptoPair:String,

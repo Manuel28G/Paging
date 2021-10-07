@@ -8,12 +8,20 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.manuel28g.test.paging3.R
 import com.manuel28g.test.paging3.databinding.FragmentCryptoListBinding
 import com.manuel28g.test.paging3.ui.adapter.CryptoListAdapter
+import com.manuel28g.test.paging3.ui.adapter.CryptoListStatefulAdapter
 import com.manuel28g.test.paging3.viewmodel.CryptoInfoViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class CryptoListFragment: Fragment() {
     private lateinit var mBinding : FragmentCryptoListBinding
@@ -38,17 +46,14 @@ class CryptoListFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mViewModel.cryptoDataListObserve().observe(viewLifecycleOwner, {
-            it?.let { data ->
-                mAdapter.submitList(data){
-                    val layoutManager = (mBinding.cryptoListRvContent.layoutManager as LinearLayoutManager)
-                    val position = layoutManager.findFirstCompletelyVisibleItemPosition()
-                    if (position != RecyclerView.NO_POSITION) {
-                        mBinding.cryptoListRvContent.scrollToPosition(position)
+        lifecycleScope.launch{
+            mViewModel.cryptoDataListObserve().collectLatest {
+                it?.let { data ->
+                    withContext(Dispatchers.Main){
+                        mAdapter.submitData(data)
                     }
                 }
             }
-        })
-
+        }
     }
 }
