@@ -7,6 +7,6 @@ import kotlinx.coroutines.runBlocking
 class BinanceRepositoryImpl(private val api: BinanceAPI): BinanceRepository {
     override fun getData() : List<CryptoCurrency>? =
         runBlocking {
-            api.getData().execute().body()
+            api.getData().body()
         }
 }
