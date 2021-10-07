@@ -12,6 +12,7 @@ class CryptoDataPagingSource(private val api: BinanceAPI): PagingSource<Int,Cryp
     companion object{
         private const val SECOND_CRYPTO_TITLE = "USDT"
         private var mData: List<CryptoCurrency>?= null
+        private const val STARTING_INDEX = 1
     }
 
     override fun getRefreshKey(state: PagingState<Int, CryptoCurrency>): Int? {
@@ -21,26 +22,31 @@ class CryptoDataPagingSource(private val api: BinanceAPI): PagingSource<Int,Cryp
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CryptoCurrency> {
-        val nextPageNumber = params.key ?: 1
+        val position = params.key ?: STARTING_INDEX
         try{
 
             val response = api.getData()
-            val data = response.body()?.filter {
-                //Get only the cryptos with the pair indicated
-                it.cryptoPair.contains(SECOND_CRYPTO_TITLE)
-            }?.map {
-                val cryptoTitle = it.cryptoPair.split(SECOND_CRYPTO_TITLE)
-                it.cryptoPair = "${cryptoTitle[0]}/${SECOND_CRYPTO_TITLE}"
-                it
+
+            if(mData == null) {
+                mData = response.body()?.filter {
+                    //Get only the cryptos with the pair indicated
+                    it.cryptoPair.contains(SECOND_CRYPTO_TITLE)
+                }?.map {
+                    val cryptoTitle = it.cryptoPair.split(SECOND_CRYPTO_TITLE)
+                    it.cryptoPair = "${cryptoTitle[0]}/${SECOND_CRYPTO_TITLE}"
+                    it
+                }
             }
-            data?.take(params.loadSize)?.let {
+            val nextKey = if(mData?.isEmpty() == true) null else {position + params.loadSize}
+
+            mData?.take(params.loadSize)?.let {
                 //remove from response the data send to the adapter
-                mData = data?.subList(params.loadSize,data?.size?: 0)
+                mData = mData?.subList(params.loadSize,mData?.size?: 0)
 
                 return LoadResult.Page(
                     data = it,
-                    prevKey = null,
-                    nextKey = nextPageNumber
+                    prevKey = if(position == STARTING_INDEX ) null else position - 1,
+                    nextKey = nextKey
                 )
 
             }

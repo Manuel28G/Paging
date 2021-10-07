@@ -34,7 +34,7 @@ android {
         versionName "1.0"
 
         buildConfigField "String", "CRYPTO_API_URL", "\"https://api.binance.com/api/v3/\""
-        buildConfigField "Long", "API_TIMEOUT", localProperties['apiConnectionTimeoutInSecconds']
+        buildConfigField "Long", "API_TIMEOUT", "30L"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
 
