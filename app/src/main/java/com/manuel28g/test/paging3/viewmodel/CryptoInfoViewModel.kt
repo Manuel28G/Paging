@@ -29,7 +29,7 @@ class CryptoInfoViewModel: ViewModel() {
         }
     }
 
-    fun cryptoDataListObserve():LiveData<PagedList<CryptoCurrency>?>{
+    fun cryptoDataListObserve():LiveData<PagedList<CryptoCurrency>>{
        val config = PagedList.Config.Builder()
            .setPageSize(10)
            .setEnablePlaceholders(true)
