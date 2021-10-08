@@ -32,7 +32,11 @@ class CryptoInfoViewModel: ViewModel() {
     }
 
     fun cryptoDataListObserve(): Flow<PagingData<CryptoCurrency>?> {
-        return Pager(PagingConfig(10,1,true)){
+        return Pager(PagingConfig(
+            10,
+            initialLoadSize = 10,
+            prefetchDistance = 1,
+            enablePlaceholders = true)){
             mPagingSource
         }.flow.cachedIn(viewModelScope)
     }

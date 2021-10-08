@@ -17,7 +17,8 @@ class CryptoDataPagingSource(private val api: BinanceAPI): PagingSource<Int,Cryp
 
     override fun getRefreshKey(state: PagingState<Int, CryptoCurrency>): Int? {
         return state.anchorPosition?.let {
-            state?.closestItemToPosition(it)?.id
+            state?.closestPageToPosition(it)?.prevKey?.plus(1)?:
+            state?.closestPageToPosition(it)?.nextKey?.minus(1)
         }
     }
 
